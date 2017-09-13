@@ -55,16 +55,20 @@ public class MainActivity extends AppCompatActivity {
             }).start();
         }
     }
-
+    Runnable runnable = new Runnable() {
+        public void run() {
+            gifHandler = new GifHandler(file.getAbsolutePath());
+            Log.i("LouisShark", "ndkLoadGif: " + file.getAbsolutePath());
+            //得到gif   width  height  生成Bitmap
+            int width = gifHandler.getWidth();
+            int height=gifHandler.getHeight();
+            bitmap= Bitmap.createBitmap(width,height, Bitmap.Config.ARGB_8888);
+            int delay=gifHandler.updateFrame(bitmap);
+            handler.sendEmptyMessageDelayed(1, delay);
+        }
+    };
     public void ndkLoadGif(View view) {
-        gifHandler = new GifHandler(file.getAbsolutePath());
-        Log.i("LouisShark", "ndkLoadGif: " + file.getAbsolutePath());
-        //得到gif   width  height  生成Bitmap
-        int width = gifHandler.getWidth();
-        int height=gifHandler.getHeight();
-        bitmap= Bitmap.createBitmap(width,height, Bitmap.Config.ARGB_8888);
-        int delay=gifHandler.updateFrame(bitmap);
-        handler.sendEmptyMessageDelayed(1, delay);
+        new Thread(runnable).start();
     }
 
     Handler handler = new Handler(){
