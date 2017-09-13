@@ -1,0 +1,2 @@
+# CGifDemo
+使用C语言来在android设备上播放Gif动画的Demo
